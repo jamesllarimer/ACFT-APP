@@ -19,19 +19,13 @@ try {
   console.error(e);
 }
 });
-
-// function parseCsv(){
-//     const input = document.querySelector("input[type=file]");
-//           readCSv(input.value);
-
-// }
 function initializeApp(){
   app       = firebase.app();
   db        = app.firestore();
   provider  = new firebase.auth.GoogleAuthProvider();
 
   app.auth().signInWithPopup(provider).then(function(result) {
-  console.log(result);
+ 
   }).catch(function(error) {
     // Handle Errors here.
     var errorCode = error.code;
@@ -51,15 +45,19 @@ function initializeApp(){
     }
   });
 
- document.querySelector("button").addEventListener("click", (e)=>{
+ document.querySelector("form").addEventListener("submit", (e)=>{
    e.preventDefault();
-   getValues();
+   calculateScore();
  });
+
+ document.getElementById("save").addEventListener("click", ()=>{
+  saveScore();
+});
 }
 
 function loadUserValues(user){
 
-  db.collection("scores").where('uid' ,'==', user).orderBy('createdDate', 'desc')
+  db.collection("scores").where('uid' ,'==', user).orderBy('createdDate', 'desc').limit(1)
   .onSnapshot(function(querySnapshot) {
       scoreList.innerHTML = '';
       querySnapshot.forEach(function(doc) {
@@ -69,28 +67,17 @@ function loadUserValues(user){
 }
 
 function getValues(){
-  db.collection("scores").add(
-     {
-         uid:                       firebase.auth().currentUser.uid,
-         userName:                  firebase.auth().currentUser.displayName,
-         createdDate:               Date.now(),
-         maxDeadLiftValue:          document.getElementById("MaxDeadLift").value,
-         pushUpValue:               document.getElementById("PushUp").value,
-         standingPowerThrow:        document.getElementById("StandingPowerThrow").value,
-         sprintDragCarryMinutes:    document.getElementById("SprintDragCarryMinutes").value,
-         sprintDragCarrySeconds:    document.getElementById("SprintDragCarrySeconds").value,
-         legTuck:                   document.getElementById("LegTuck").value,
-         TwoMileRunMinutes:         document.getElementById("TwoMileRunMinutes").value,
-         TwoMileRunSeconds:         document.getElementById("TwoMileRunSeconds").value
-     }
-     )
-     .then(function(docRef) {
-         console.log("Document written with ID: ", docRef.id);
-         document.querySelector('form').reset();
-     })
-     .catch(function(error) {
-     console.error("Error adding document: ", error);
-     });
+
+let scores = {
+  MDL: document.getElementById("MaxDeadLift").value.toString(),
+  HRP: document.getElementById("PushUp").value.toString(),
+  SPT: document.getElementById("StandingPowerThrow").value.toString(),
+  SDC: `${document.getElementById("SprintDragCarryMinutes").value}:${document.getElementById("SprintDragCarrySeconds").value}`,
+  LTK: document.getElementById("LegTuck").value.toString(),
+  TMR: `${document.getElementById("TwoMileRunMinutes").value}:${document.getElementById("TwoMileRunSeconds").value}`
+
+}
+return scores;
  }
 
 function renderScores(result){
@@ -120,4 +107,63 @@ function renderScores(result){
     scoreList.appendChild(userHeader)
     scoreList.appendChild(ul)
     scoreList.classList.add('user-results');
+}
+
+function calculateScore(){
+  let rawScores = getValues();
+  for (let [key, value] of Object.entries(rawScores)) {
+    db.collection("Points").where(key ,'==', value)
+    .onSnapshot(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+       updateScoreUi(key, doc.data().Points);
+       });
+    });
+  }
+}
+
+function updateScoreUi(key, value){
+  if(key && value){
+    console.log(key);
+    document.getElementById(key).querySelector("div.score").textContent = `${value}/100`;
+    let progressBar = document.getElementById(key).querySelector('div.progress').querySelector('div.progress-bar');
+    let outcomeClassList = ["bg-dark", "bg-secondary", "bg-warning", "bg-danger"]
+    let outcomeClass = ""
+    if(value >=70){
+      outcomeClass = "bg-dark"
+    }else if(value >=65){
+      outcomeClass = "bg-secondary"
+    }else if(value >=60){
+      outcomeClass = "bg-warning"
+    }else{
+      outcomeClass = "bg-danger"
+    }
+    progressBar.classList.remove(outcomeClassList)
+    progressBar.classList.add(outcomeClass);
+    progressBar.style.width = `${value}%`;
+  }
+}
+
+function saveScore(){
+  db.collection("scores").add(
+    {
+        uid:                       firebase.auth().currentUser.uid,
+        userName:                  firebase.auth().currentUser.displayName,
+        createdDate:               Date.now(),
+        maxDeadLiftValue:          document.getElementById("MaxDeadLift").value,
+        pushUpValue:               document.getElementById("PushUp").value,
+        standingPowerThrow:        document.getElementById("StandingPowerThrow").value,
+        sprintDragCarryMinutes:    document.getElementById("SprintDragCarryMinutes").value,
+        sprintDragCarrySeconds:    document.getElementById("SprintDragCarrySeconds").value,
+        legTuck:                   document.getElementById("LegTuck").value,
+        TwoMileRunMinutes:         document.getElementById("TwoMileRunMinutes").value,
+        TwoMileRunSeconds:         document.getElementById("TwoMileRunSeconds").value
+    }
+    )
+    .then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+        document.querySelector('form').reset();
+    })
+    .catch(function(error) {
+    console.error("Error adding document: ", error);
+    });
 }
