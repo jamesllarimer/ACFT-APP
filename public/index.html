@@ -36,7 +36,7 @@
             <label class="col-auto mr-auto" for="MaxDeadLift">Max Dead Lift</label>
             <div class="col-auto score">0/100</div>
         </div>
-        <input class="form-control" id="MaxDeadLift" type="number" min="110" max="340" step="10">
+        <select class="form-control" id="MaxDeadLift"></select>
       <div class="progress">
           <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
@@ -47,7 +47,7 @@
             <label class="col-auto mr-auto" for="PushUp">Push Up</label>
             <div class="col-auto score">0/100</div>
          </div> 
-        <input class="form-control" id="PushUp" type="number" min="0" max="60">
+         <select class="form-control" id="PushUp"></select>
         <div class="progress">
             <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
@@ -58,23 +58,18 @@
             <label class="col-auto mr-auto" for="StandingPowerThrow">Standing Power Throw</label>
             <div class="col-auto score">0/100</div>
         </div>
-        <input class="form-control" id="StandingPowerThrow" type="number" min="0" max="12.5" step="0.1">
+        <select class="form-control" id="StandingPowerThrow"></select>
         <div class="progress">
             <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
       </div>
             
-      <div class="form-group">
-        <label for="SprintDragCarryMinutes">Sprint Drag Carry Minutes</label>
-        <input class="form-control" Id="SprintDragCarryMinutes" type="number"  min="0" max="10">
-      </div>
-
       <div id="SDC" class="form-group">
         <div class="row">
-            <label class="col-auto mr-auto" for="SprintDragCarrySeconds">Sprint Drag Carry Seconds</label>
+            <label class="col-auto mr-auto" for="SprintDragCarry">Sprint Drag Carry</label>
             <div class="col-auto score">0/100</div>
         </div>
-        <input class="form-control" id="SprintDragCarrySeconds" type="number"  min="0" max="60">
+        <select class="form-control" id="SprintDragCarry"></select>
         <div class="progress">
             <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
@@ -85,23 +80,18 @@
             <label class="col-auto mr-auto" for="LegTuck">Leg Tuck</label>
             <div class="col-auto score">0/100</div>
         </div>
-        <input class="form-control" id="LegTuck" type="number">
+        <select class="form-control" id="LegTuck"></select>
         <div class="progress">
             <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
       </div>
-        
-      <div class="form-group">        
-        <label for="TwoMileRunMinutes">Two Mile Run Minutes</label>
-        <input class="form-control" id="TwoMileRunMinutes" type="number" min="0" max="30">
-      </div>
           
       <div id="TMR" class="form-group">
         <div class="row">
-            <label class="col-auto mr-auto" for="TwoMileRunSeconds">Two Mile Run Seconds</label>
+            <label class="col-auto mr-auto" for="TwoMileRun">Two Mile Run</label>
             <div class="col-auto score">0/100</div>
         </div>
-        <input class="form-control" id="TwoMileRunSeconds" type="number"  min="0" max="60">
+        <select class="form-control" id="TwoMileRun"></select>
         <div class="progress">
             <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
@@ -114,6 +104,24 @@
 </div>
     <div id="score-list"></div>
   </div>
+  <div class="container">
+    <div class="jumbotron">
+          <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Points</th>
+                      <th scope="col">MDL</th>
+                      <th scope="col">SPT</th>
+                      <th scope="col">SDC</th>
+                      <th scope="col">LTK</th>
+                      <th scope="col">TMR</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+          </table>
+    </div>
+</div>
  <!-- update the version number as needed -->
  <script defer src="/__/firebase/7.2.1/firebase-app.js"></script>
  <!-- include only the Firebase features as you need -->
