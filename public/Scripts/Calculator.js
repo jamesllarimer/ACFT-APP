@@ -79,7 +79,7 @@ function setUpEventListeners() {
 }
 function loadUserValues(user) {
 
-  db.collection("scores").where('uid', '==', user).orderBy('createdDate', 'desc').limit(1)
+  db.collection("Scores").where('uid', '==', user).orderBy('createdDate', 'desc').limit(1)
     .onSnapshot(function (querySnapshot) {
       scoreList.innerHTML = '';
       querySnapshot.forEach(function (doc) {
@@ -158,23 +158,37 @@ function updateScoreUi(e) {
 }
 
 function saveScore() {
-  db.collection("scores").add(
+
+  let maxDeadLiftSelect = document.getElementById("MaxDeadLift");
+  let pushUpSelect =  document.getElementById("PushUp");
+  let standingPowerThrowSelect = document.getElementById("StandingPowerThrow");
+  let sprintDragCarrySelect = document.getElementById("SprintDragCarry");
+  let legTuckSelect = document.getElementById("LegTuck");
+  let twoMileRunSelect = document.getElementById("TwoMileRun");
+   
+  db.collection("Scores").add(
     {
       uid: firebase.auth().currentUser.uid,
       userName: firebase.auth().currentUser.displayName,
       createdDate: Date.now(),
-      maxDeadLiftRaw: document.getElementById("MaxDeadLift").innerText,
-      maxDeadLiftScore: document.getElementById("MaxDeadLift").value,
-      pushUpRaw: document.getElementById("PushUp").innerText,
-      pushUpScore: document.getElementById("PushUp").value,
-      standingPowerThrowRaw: document.getElementById("StandingPowerThrow").innerText,
-      standingPowerThrowScore: document.getElementById("StandingPowerThrow").value,
-      sprintDragCarryRaw: document.getElementById("SprintDragCarry").innerText,
-      sprintDragCarryScore: document.getElementById("SprintDragCarry").value,
-      legTuckRaw: document.getElementById("LegTuck").innerText,
-      legTuckScore: document.getElementById("LegTuck").value,
-      TwoMileRunRaw: document.getElementById("TwoMileRun").innerText,
-      TwoMileRunScore: document.getElementById("TwoMileRun").value,    
+
+      maxDeadLiftRaw: parseInt(maxDeadLiftSelect.options[maxDeadLiftSelect.selectedIndex].text),
+      maxDeadLiftScore: parseInt(maxDeadLiftSelect.value),
+
+      pushUpRaw: parseInt(pushUpSelect.options[pushUpSelect.selectedIndex].text),
+      pushUpScore: parseInt(pushUpSelect.value),
+
+      standingPowerThrowRaw: parseInt(standingPowerThrowSelect.options[standingPowerThrowSelect.selectedIndex].text),
+      standingPowerThrowScore: parseInt(standingPowerThrowSelect.value),
+
+      sprintDragCarryRaw: sprintDragCarrySelect.options[sprintDragCarrySelect.selectedIndex].text,
+      sprintDragCarryScore: parseInt(sprintDragCarrySelect.value),
+      
+      legTuckRaw: parseInt(legTuckSelect.options[legTuckSelect.selectedIndex].text),
+      legTuckScore: parseInt(legTuckSelect.value),
+
+      TwoMileRunRaw: twoMileRunSelect.options[twoMileRunSelect.selectedIndex].text,
+      TwoMileRunScore: parseInt(twoMileRunSelect.value),    
     }
   )
     .then(function (docRef) {
