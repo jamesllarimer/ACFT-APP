@@ -1,209 +1,27 @@
-let app;
-let db;
-let provider;
-let sptInput;
-let mdlInput;
-let puInput;
-let sdcInput;
-let ltInput;
-let tmrInput;
-document.addEventListener('DOMContentLoaded', function () {
-  // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-  // // The Firebase SDK is initialized and available here!
-  //
-  // firebase.auth().onAuthStateChanged(user => { });
-  // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-  // firebase.messaging().requestPermission().then(() => { });
-  // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-  //
-  // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-
-  try {
-    initializeApp()
-  } catch (e) {
-    console.error(e);
-  }
-});
-
-
-function initializeApp() {
-  app = firebase.app();
-  db = app.firestore();
-  provider = new firebase.auth.GoogleAuthProvider();
-  scoreList = document.getElementById('score-list');
-  tableBody = document.querySelector('tbody');
-  mdlInput = document.getElementById('MaxDeadLift');
-  sptInput = document.getElementById('StandingPowerThrow')
-  puInput  = document.getElementById('PushUp');
-  sdcInput = document.getElementById('SprintDragCarry');
-  ltInput= document.getElementById('LegTuck');
-  tmrInput= document.getElementById('TwoMileRun');
-  setUpEventListeners();
-  getPointsTableData();
-  app.auth().onAuthStateChanged(function (user) {
-    if (user) {
-      console.log(user.displayName + "is signed in")
-    } else {
-      app.auth().signInWithPopup(provider).then(function (result) {
-
-      }).catch(function (error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
-      });
+document.addEventListener('DOMContentLoaded', function () {  
+    try {
+      getPointsTableData()
+    } catch (e) {
+      console.error(e);
     }
   });
-}
-
-function setUpEventListeners() {
-  // document.querySelector("form").addEventListener("submit", (e) => {
-  //   e.preventDefault();
-  //   saveScore();
-  // });
-
-  document.addEventListener("change", (e) => {
-   updateScoreUi(e);
-  });
-
-  document.getElementById("save").addEventListener("click", () => {
-    saveScore();
-  });
-}
-
-
-function getValues() {
-
-  let scores = {
-    MDL: document.getElementById("MaxDeadLift").value.toString(),
-    HRP: document.getElementById("PushUp").value.toString(),
-    SPT: document.getElementById("StandingPowerThrow").value.toString(),
-    SDC: `${document.getElementById("SprintDragCarryMinutes").value}:${document.getElementById("SprintDragCarrySeconds").value}`,
-    LTK: document.getElementById("LegTuck").value.toString(),
-    TMR: `${document.getElementById("TwoMileRunMinutes").value}:${document.getElementById("TwoMileRunSeconds").value}`
-
-  }
-  return scores;
-}
-
-function updateScoreUi(e) {
-  if (e) {
-   let selectItem = e.target;
-   let score = selectItem.value;
-   let prev = selectItem.previousSibling.previousSibling;
-   let next = selectItem.nextSibling.nextSibling;
-   console.log(next)
-   prev.querySelector('.score').textContent = `${score}/100`;
-    let progressBar = next.querySelector('div.progress-bar');
-    let outcomeClass = ""
-    if (score >= 70) {
-      outcomeClass = "bg-success"
-    } else if (score >= 65) {
-      outcomeClass = "bg-warning"
-    } else if (score >= 60) {
-      outcomeClass = "bg-orange"
-    } else {
-      outcomeClass = "bg-danger"
-    }
-    progressBar.classList.remove("bg-success", "bg-orange", "bg-warning", "bg-danger")
-    progressBar.classList.add(outcomeClass);
-    progressBar.style.width = `${score}%`;
-  }
-}
-
-function saveScore() {
-
-  let maxDeadLiftSelect = document.getElementById("MaxDeadLift");
-  let pushUpSelect =  document.getElementById("PushUp");
-  let standingPowerThrowSelect = document.getElementById("StandingPowerThrow");
-  let sprintDragCarrySelect = document.getElementById("SprintDragCarry");
-  let legTuckSelect = document.getElementById("LegTuck");
-  let twoMileRunSelect = document.getElementById("TwoMileRun");
-   
-  db.collection("Scores").add(
-    {
-      uid: firebase.auth().currentUser.uid,
-      userName: firebase.auth().currentUser.displayName,
-      createdDate: Date.now(),
-
-      maxDeadLiftRaw: parseInt(maxDeadLiftSelect.options[maxDeadLiftSelect.selectedIndex].text),
-      maxDeadLiftScore: parseInt(maxDeadLiftSelect.value),
-
-      pushUpRaw: parseInt(pushUpSelect.options[pushUpSelect.selectedIndex].text),
-      pushUpScore: parseInt(pushUpSelect.value),
-
-      standingPowerThrowRaw: parseInt(standingPowerThrowSelect.options[standingPowerThrowSelect.selectedIndex].text),
-      standingPowerThrowScore: parseInt(standingPowerThrowSelect.value),
-
-      sprintDragCarryRaw: sprintDragCarrySelect.options[sprintDragCarrySelect.selectedIndex].text,
-      sprintDragCarryScore: parseInt(sprintDragCarrySelect.value),
-      
-      legTuckRaw: parseInt(legTuckSelect.options[legTuckSelect.selectedIndex].text),
-      legTuckScore: parseInt(legTuckSelect.value),
-
-      TwoMileRunRaw: twoMileRunSelect.options[twoMileRunSelect.selectedIndex].text,
-      TwoMileRunScore: parseInt(twoMileRunSelect.value),    
-    }
-  )
-    .then(function (docRef) {
-      console.log("Document written with ID: ", docRef.id);
-      document.querySelector('form').reset();
-    })
-    .catch(function (error) {
-      console.error("Error adding document: ", error);
-    });
-}
-
-async function getPointsTableData() {
+  async function getPointsTableData() {
   jsonScores.forEach((row) => {
-    renderSelects(row);
+    renderTable(row);
   });
 }
-
-function renderSelects(row) {
-  let points =  row.Points;
-  if (row.MDL) {
-    let option = document.createElement('option');
-    option.value = points;
-    option.innerText = row.MDL;
-    mdlInput.appendChild(option)
-  }
-  if (row.HRP) {
-    let option = document.createElement('option');
-    option.value = points;
-    option.innerText = row.HRP;
-    puInput.appendChild(option)
-  }
-  if (row.SPT) {
-    let option = document.createElement('option');
-    option.value = points;
-    option.innerText = row.SPT;
-    sptInput.appendChild(option)
-  }
-  if (row.LTK) {
-    let option = document.createElement('option');
-    option.value = points;
-    option.innerText = row.LTK;
-    ltInput.appendChild(option)
-  }
-  if (row.SDC) {
-    let option = document.createElement('option');
-    option.value = points;
-    option.innerText = row.SDC;
-    sdcInput.appendChild(option)
-  }
-  if (row.TMR) {
-    let option = document.createElement('option');
-    option.value = points;
-    option.innerText = row.TMR;
-    tmrInput.appendChild(option)
-  }
+function renderTable(row) {
+  let tableBody = document.querySelector('tbody');
+  let tableRow = document.createElement('tr');
+  tableRow.innerHTML =
+    `<th scope="row">${row.Points}</th>
+        <td>${row.MDL || "--"}</td>
+        <td>${row.SPT || "--"}</td>
+        <td>${row.SDC || "--"}</td>
+        <td>${row.LTK || "--"}</td>
+        <td>${row.TMR || "--"}</td>`;
+  tableBody.appendChild(tableRow);
 }
-
 
 let jsonScores = [
   { "Points": 100, "MDL": 340, "SPT": 12.5, "HRP": 60, "SDC": "1:33", "LTK": 20, "TMR": "13:30" }
