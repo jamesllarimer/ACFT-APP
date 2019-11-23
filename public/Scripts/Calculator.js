@@ -61,10 +61,6 @@ function initializeApp() {
 }
 
 function setUpEventListeners() {
-  // document.querySelector("form").addEventListener("submit", (e) => {
-  //   e.preventDefault();
-  //   saveScore();
-  // });
 
   document.addEventListener("change", (e) => {
    updateScoreUi(e);
@@ -90,14 +86,24 @@ function getValues() {
   return scores;
 }
 
+function getTotalScore(){
+ let inputs = document.querySelectorAll("select");
+ let totalScore = 0;
+ inputs.forEach((input) =>{
+  totalScore += parseInt(input.value);
+ });
+ return totalScore;
+}
+
 function updateScoreUi(e) {
   if (e) {
    let selectItem = e.target;
    let score = selectItem.value;
    let prev = selectItem.previousSibling.previousSibling;
    let next = selectItem.nextSibling.nextSibling;
-   console.log(next)
+   let total = document.getElementById("TotalScore");
    prev.querySelector('.score').textContent = `${score}/100`;
+   total.textContent = `${getTotalScore()}/600`;
     let progressBar = next.querySelector('div.progress-bar');
     let outcomeClass = ""
     if (score >= 70) {
