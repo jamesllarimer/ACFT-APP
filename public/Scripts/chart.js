@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
       console.error(e);
     }
   });
-  async function getPointsTableData() {
+ function getPointsTableData() {
   jsonScores.forEach((row) => {
     renderTable(row);
   });

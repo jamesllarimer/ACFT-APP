@@ -29,20 +29,23 @@ document.addEventListener('DOMContentLoaded', function () {
 function initializeApp() {
   app = firebase.app();
   db = app.firestore();
-  provider = new firebase.auth.GoogleAuthProvider();
+  provider  = new firebase.auth.GoogleAuthProvider();
   scoreList = document.getElementById('score-list');
   tableBody = document.querySelector('tbody');
-  mdlInput = document.getElementById('MaxDeadLift');
-  sptInput = document.getElementById('StandingPowerThrow')
-  puInput  = document.getElementById('PushUp');
-  sdcInput = document.getElementById('SprintDragCarry');
-  ltInput= document.getElementById('LegTuck');
-  tmrInput= document.getElementById('TwoMileRun');
+  mdlInput  = document.getElementById('MaxDeadLift');
+  sptInput  = document.getElementById('StandingPowerThrow')
+  puInput   = document.getElementById('PushUp');
+  sdcInput  = document.getElementById('SprintDragCarry');
+  ltInput   = document.getElementById('LegTuck');
+  tmrInput  = document.getElementById('TwoMileRun');
+
   setUpEventListeners();
-  getPointsTableData();
+  initializeSelects();
+
   app.auth().onAuthStateChanged(function (user) {
     if (user) {
-      console.log(user.displayName + "is signed in")
+     loadUserValues(app.auth().currentUser.uid);
+     document.getElementById("SaveButton").removeAttribute("hidden");
     } else {
       app.auth().signInWithPopup(provider).then(function (result) {
 
@@ -66,7 +69,7 @@ function setUpEventListeners() {
    updateScoreUi(e);
   });
 
-  document.getElementById("save").addEventListener("click", () => {
+  document.getElementById("SaveButton").addEventListener("click", () => {
     saveScore();
   });
 }
@@ -129,12 +132,13 @@ function saveScore() {
   let sprintDragCarrySelect = document.getElementById("SprintDragCarry");
   let legTuckSelect = document.getElementById("LegTuck");
   let twoMileRunSelect = document.getElementById("TwoMileRun");
-   
+  let totalScore = document.getElementById("TotalScore").innerText;
   db.collection("Scores").add(
     {
       uid: firebase.auth().currentUser.uid,
       userName: firebase.auth().currentUser.displayName,
       createdDate: Date.now(),
+      totalScore: totalScore,
 
       maxDeadLiftRaw: parseInt(maxDeadLiftSelect.options[maxDeadLiftSelect.selectedIndex].text),
       maxDeadLiftScore: parseInt(maxDeadLiftSelect.value),
@@ -164,13 +168,16 @@ function saveScore() {
     });
 }
 
- function getPointsTableData() {
-  jsonScores.forEach((row) => {
-    renderSelects(row);
-  });
-}
 
-function renderSelects(row) {
+function initializeSelects() {
+  let inputs = document.querySelectorAll("select");
+  inputs.forEach((input) =>{
+    let option = document.createElement('option');
+    option.value = 0;
+    option.innerText = "Select a score";
+    input.appendChild(option)
+  })
+  jsonScores.forEach((row) => {
   let points =  row.Points;
   if (row.MDL) {
     let option = document.createElement('option');
@@ -208,6 +215,56 @@ function renderSelects(row) {
     option.innerText = row.TMR;
     tmrInput.appendChild(option)
   }
+  });
+}
+
+function loadUserValues(user) {
+
+  db.collection("Scores").where('uid', '==', user).orderBy('createdDate', 'desc').limit(1)
+    .onSnapshot(function (querySnapshot) {
+      scoreList.innerHTML = '';
+      querySnapshot.forEach(function (doc) {
+        renderScores(doc.data())
+      });
+    });
+}
+
+
+
+function renderScores(result) {
+  let ul = document.createElement('ul');
+  let userHeader = document.createElement('h4');
+  let createdDateLI = document.createElement('li');
+  let maxDeadLiftValueLi = document.createElement('li');
+  let pushUpValueLi = document.createElement('li');
+  let sprintDragCarryLi = document.createElement('li');
+  let legTuckLi = document.createElement('li');
+  let TwoMileRunLi = document.createElement('li');
+  let liArray = [createdDateLI, maxDeadLiftValueLi, pushUpValueLi, sprintDragCarryLi, sprintDragCarryLi, legTuckLi, TwoMileRunLi];
+
+  liArray.forEach((li) => {
+    li.classList.add("list-group-item");
+  })
+
+  ul.classList.add("list-group");
+
+  userHeader.innerHTML = `<strong>Previous score: </strong>${result.totalScore}`;
+  createdDateLI.innerHTML = `<strong>Date: </strong>${new Date(result.createdDate).toDateString()}`;
+  maxDeadLiftValueLi.innerHTML = `<strong>Max Dead Lift: </strong>${result.maxDeadLiftScore} <strong>Raw: </strong>${result.maxDeadLiftRaw}`;
+  pushUpValueLi.innerHTML = `<strong>Push UP: </strong>${result.pushUpScore} <strong>Raw: </strong>${result.pushUpRaw}`;
+  sprintDragCarryLi.innerHTML = `<strong>Sprint Drag Carry: </strong>${result.sprintDragCarryScore} <strong>Raw: </strong>${result.sprintDragCarryRaw}`;
+  legTuckLi.innerHTML = `<strong>Leg Tuck: </strong>${result.legTuckScore} <strong>Raw: </strong>${result.legTuckRaw}`;
+  TwoMileRunLi.innerHTML = `<strong>Two Mile Run: </strong>${result.TwoMileRunScore} <strong>Raw: </strong>${result.TwoMileRunRaw}`;
+
+  ul.appendChild(createdDateLI);
+  ul.appendChild(maxDeadLiftValueLi);
+  ul.appendChild(pushUpValueLi);
+  ul.appendChild(sprintDragCarryLi);
+  ul.appendChild(legTuckLi);
+  ul.appendChild(TwoMileRunLi);
+  scoreList.appendChild(userHeader)
+  scoreList.appendChild(ul)
+  scoreList.classList.add('user-results');
 }
 
 
