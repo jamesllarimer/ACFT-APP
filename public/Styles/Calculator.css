@@ -1,9 +1,9 @@
-  .user-results{
-    font: 20px;
-  }
+.user-results{
+   font: 20px;
+}
 .bg-orange{
   background-color: orange;
 }  
 label, .score{
-  color: azure;
+  color: black;
 }

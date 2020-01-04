@@ -4,39 +4,108 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="/Styles/Calculator.css">
+    <link rel="stylesheet" href="../Styles/Calculator.css">
     <title>ACFT Calculator</title>
   </head>
   <body class="bg-dark">
-    <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">ACFT Calculator</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-          
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="HTML/calculator.html">Calculator</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="HTML/chart.html">Score Chart</a>
-                </li>
-              </ul>
+      <div class="container">
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+              <a class="navbar-brand" href="#">ACFT Calculator</a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+            
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                  <li class="nav-item active">
+                    <a class="nav-link" href="#">Calculator</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="HTML/chart.html">Score Chart</a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+            <div class="card">
+              <form>
+                  <div id="MDL" class="form-group">
+                    <div class="row">
+                        <label class="col-auto mr-auto" for="MaxDeadLift">Max Dead Lift</label>
+                        <div class="col-auto score">0/100</div>
+                    </div>
+                    <select class="form-control" id="MaxDeadLift"></select>
+                  <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  </div>
+                  
+                   <div id="HRP" class="form-group">
+                     <div class="row">
+                        <label class="col-auto mr-auto" for="PushUp">Push Up</label>
+                        <div class="col-auto score">0/100</div>
+                     </div> 
+                     <select class="form-control" id="PushUp"></select>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                  
+                  <div id="SPT" class="form-group">
+                    <div class="row">
+                        <label class="col-auto mr-auto" for="StandingPowerThrow">Standing Power Throw</label>
+                        <div class="col-auto score">0/100</div>
+                    </div>
+                    <select class="form-control" id="StandingPowerThrow"></select>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                        
+                  <div id="SDC" class="form-group">
+                    <div class="row">
+                        <label class="col-auto mr-auto" for="SprintDragCarry">Sprint Drag Carry</label>
+                        <div class="col-auto score">0/100</div>
+                    </div>
+                    <select class="form-control" id="SprintDragCarry"></select>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                  
+                  <div id="LTK" class="form-group">
+                    <div class="row">
+                        <label class="col-auto mr-auto" for="LegTuck">Leg Tuck</label>
+                        <div class="col-auto score">0/100</div>
+                    </div>
+                    <select class="form-control" id="LegTuck"></select>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                      
+                  <div id="TMR" class="form-group">
+                    <div class="row">
+                        <label class="col-auto mr-auto" for="TwoMileRun">Two Mile Run</label>
+                        <div class="col-auto score">0/100</div>
+                    </div>
+                    <select class="form-control" id="TwoMileRun"></select>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>  
+                  <button id="save" class="btn btn-success btn-sm btn-block">Save Score</button>
+                </form>
+                <hr>
+                <div class="card text-left">
+                    <div class="card-body">
+                    <h4 class="card-title">Total Score</h4>
+                    <p id="TotalScore" class="card-text">0/600</p>
+                  </div>
+                </div>
             </div>
-          </nav>
-    </div>
-    <div class="container">
-      <div class="card">
-       <div class="card-body">
-       <div id="score-list"></div>
+        </div>
       </div>
-    </div>
-</div>
+    
  <!-- update the version number as needed -->
  <script defer src="/__/firebase/7.2.1/firebase-app.js"></script>
  <!-- include only the Firebase features as you need -->
@@ -47,9 +116,6 @@
  <script defer src="/__/firebase/7.2.1/firebase-firestore.js"></script>
  <!-- initialize the SDK after all desired features are loaded -->
  <script defer src="/__/firebase/init.js"></script>
- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="./Scripts/index.js"></script>
   </body>
 </html>

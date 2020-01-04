@@ -17,6 +17,7 @@ function renderTable(row){
       `<th scope="row">${row.Points}</th>
         <td>${row.MDL}</td>
         <td>${row.SPT}</td>
+        <td>${row.HRP}</td>
         <td>${row.SDC}</td>
         <td>${row.LTK}</td>
         <td>${row.TMR}</td>`;
