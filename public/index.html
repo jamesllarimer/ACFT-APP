@@ -28,7 +28,7 @@
             </nav>
             <hr>
             <div class="card">
-              <form>
+              <form id="CalculatorMain">
                   <div id="MDL" class="form-group">
                     <div class="row">
                         <label class="col-auto mr-auto" for="MaxDeadLift">Max Dead Lift</label>
@@ -102,11 +102,18 @@
                     <h4 class="card-title"><strong>Total Score: </strong><span id="TotalScore">0/600</span></h2> 
                   </div>
                 </div>
-                <hr>
-                 <div class="card">
-                    <div id="score-list" class="card-body">
+              </div>
+              <br>
+            <div class="card">
+              <div class="form-group">
+                <label for="NumberOfResults">Number of previous records to show?</label>
+                <input type="number"
+                  class="form-control" name="NumberOfResults" id="NumberOfResults"  placeholder="0">
+                <button id="GetPreviousResultsButton" class="btn btn-info btn-sm btn-block">Get Results</button>
+              </div>
+              <!-- <button id="ViewPreviousScores" class="btn btn-success btn-sm btn-block" hidden>Save Score</button> -->
+                  <div id="score-list" class="card-body">
                   </div>
-                </div>
             </div>
         </div>
       </div>

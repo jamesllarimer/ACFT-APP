@@ -44,7 +44,6 @@ function initializeApp() {
 
   app.auth().onAuthStateChanged(function (user) {
     if (user) {
-     loadUserValues(app.auth().currentUser.uid);
      document.getElementById("SaveButton").removeAttribute("hidden");
     } else {
       app.auth().signInWithPopup(provider).then(function (result) {
@@ -65,12 +64,16 @@ function initializeApp() {
 
 function setUpEventListeners() {
 
-  document.addEventListener("change", (e) => {
+  document.getElementById("CalculatorMain").addEventListener("change", (e) => {
    updateScoreUi(e);
   });
 
   document.getElementById("SaveButton").addEventListener("click", () => {
     saveScore();
+  });
+
+  document.getElementById("GetPreviousResultsButton").addEventListener("click", () => {
+    loadUserValues(app.auth().currentUser.uid);
   });
 }
 
@@ -219,8 +222,9 @@ function initializeSelects() {
 }
 
 function loadUserValues(user) {
+let limit = parseInt(document.getElementById("NumberOfResults").value);
 
-  db.collection("Scores").where('uid', '==', user).orderBy('createdDate', 'desc').limit(1)
+  db.collection("Scores").where('uid', '==', user).orderBy('createdDate', 'desc').limit(limit)
     .onSnapshot(function (querySnapshot) {
       scoreList.innerHTML = '';
       querySnapshot.forEach(function (doc) {
@@ -248,7 +252,7 @@ function renderScores(result) {
 
   ul.classList.add("list-group");
 
-  userHeader.innerHTML = `<strong>Previous score: </strong>${result.totalScore}`;
+  userHeader.innerHTML = `<strong>Total score: </strong>${result.totalScore}`;
   createdDateLI.innerHTML = `<strong>Date: </strong>${new Date(result.createdDate).toDateString()}`;
   maxDeadLiftValueLi.innerHTML = `<strong>Max Dead Lift: </strong>${result.maxDeadLiftScore} <strong>Raw: </strong>${result.maxDeadLiftRaw}`;
   pushUpValueLi.innerHTML = `<strong>Push UP: </strong>${result.pushUpScore} <strong>Raw: </strong>${result.pushUpRaw}`;
