@@ -94,12 +94,12 @@
                         <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                   </div>  
-                  <button id="SaveButton" class="btn btn-success btn-sm btn-block" hidden>Save Score</button>
+                  <button id="SaveButton" class="btn btn-success btn-sm btn-block" hidden>Save Score</button>         
                 </form>
                 <hr>
                 <div class="card text-left">
                     <div class="card-body">
-                    <h4 class="card-title"><strong>Total Score: </strong><span id="TotalScore">0/600</span></h2> 
+                    <h4 class="card-title"><strong>Total Score: </strong><span id="TotalScore">0/600</span></h4> 
                   </div>
                 </div>
               </div>
@@ -108,12 +108,10 @@
               <div class="form-group">
                 <label for="NumberOfResults">Number of previous records to show?</label>
                 <input type="number"
-                  class="form-control" name="NumberOfResults" id="NumberOfResults"  placeholder="0">
+                  class="form-control" name="NumberOfResults" id="NumberOfResults"  placeholder="1" min="1">
                 <button id="GetPreviousResultsButton" class="btn btn-info btn-sm btn-block">Get Results</button>
               </div>
-              <!-- <button id="ViewPreviousScores" class="btn btn-success btn-sm btn-block" hidden>Save Score</button> -->
-                  <div id="score-list" class="card-body">
-                  </div>
+                  <div id="score-list" class="card-body"></div>
             </div>
         </div>
       </div>

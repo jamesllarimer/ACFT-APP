@@ -162,8 +162,8 @@ function saveScore() {
       TwoMileRunScore: parseInt(twoMileRunSelect.value),    
     }
   )
-    .then(function (docRef) {
-      console.log("Document written with ID: ", docRef.id);
+    .then(function (docRef) {;
+       alert(`Score successfully saved!`);
       document.querySelector('form').reset();
     })
     .catch(function (error) {
@@ -236,6 +236,7 @@ let limit = parseInt(document.getElementById("NumberOfResults").value);
 
 
 function renderScores(result) {
+  let hr = document.createElement('hr');
   let ul = document.createElement('ul');
   let userHeader = document.createElement('h4');
   let createdDateLI = document.createElement('li');
@@ -266,8 +267,9 @@ function renderScores(result) {
   ul.appendChild(sprintDragCarryLi);
   ul.appendChild(legTuckLi);
   ul.appendChild(TwoMileRunLi);
-  scoreList.appendChild(userHeader)
-  scoreList.appendChild(ul)
+  scoreList.appendChild(userHeader);
+  scoreList.appendChild(ul);
+  scoreList.appendChild(hr);
   scoreList.classList.add('user-results');
 }
 
