@@ -68,7 +68,8 @@ function setUpEventListeners() {
    updateScoreUi(e);
   });
 
-  document.getElementById("SaveButton").addEventListener("click", () => {
+  document.getElementById("SaveButton").addEventListener("click", (e) => {
+    e.preventDefault();
     saveScore();
   });
 
