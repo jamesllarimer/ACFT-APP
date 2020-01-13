@@ -1,0 +1,51 @@
+{
+    "name": "ACFT Calculator",
+    "short_name": "ACFTCalculator",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#FFFFFF",
+    "theme_color": "#FFFFFF",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/img/icons/Logo72x72.png",
+            "type": "image/png",
+            "sizes": "72x72"
+        },
+         {
+            "src": "/img/icons/Logo96x96.png",
+            "type": "image/png",
+            "sizes": "96x96"
+        },
+        {
+           "src": "/img/icons/Logo128x128.png",
+           "type": "image/png",
+           "sizes": "128x128"
+       },
+       {
+          "src": "/img/icons/Logo144x144.png",
+          "type": "image/png",
+          "sizes": "144x144"
+      },
+      {
+         "src": "/img/icons/Logo152x152.png",
+         "type": "image/png",
+         "sizes": "152x152"
+     },
+     {
+        "src": "/img/icons/Logo192x192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+    },
+    {
+       "src": "/img/icons/Logo384x384.png",
+       "type": "image/png",
+       "sizes": "384x384"
+   },
+   {
+      "src": "/img/icons/Logo512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+  }
+    ]
+}
